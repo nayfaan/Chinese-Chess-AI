@@ -1,0 +1,50 @@
+#board {
+    min-height: 750px;
+    height: 100vh;
+    float: left;
+    /*border-style: solid;*/
+}
+
+#debug-div {
+    position: relative;
+    left: 2.5%;
+    top: 50%;
+    transform: translate(0, calc(50px - 50%));
+    display: inline-block;
+    padding: 5px;
+    border-style: solid;
+}
+
+.qi {
+    position: inherit;
+    width: 75%;
+}
+
+#position-grid {
+    border-collapse: collapse;
+    width: 98.5%;
+    height: 98.5%;
+    margin: auto;
+    table-layout: fixed;
+}
+
+#position-grid tr {
+    height: 10%;
+}
+
+#position-grid td {
+    overflow: hidden;
+    text-align: center;
+    padding: 0;
+    /*border: 1px solid black;*/
+}
+
+.overlap {
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-columns: 100%;
+}
+
+.overlap > * {
+  grid-area: 1/1/-1/-1;
+}
