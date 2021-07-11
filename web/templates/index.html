@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}"> <!--stackoverflow.com/questions/28207761-->
         <script type="text/javascript" src="{{url_for('static', filename='script.js')}}" defer></script>
         <!--stackoverflow.com/questions/807878-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     </head>
     <body onload="onLoad();">
@@ -15,7 +15,7 @@
                         {% for i in range(10) %}
                             <tr>
                                 {% for j in range(9) %}
-                                    <td class="position-grid-cell-div" id="position-grid-{{i}}-{{j}}" onclick="clickGrid({{i}},{{j}})">{{grid[i][j]|safe}}</td>
+                                    <td class="position-grid-cell-div" id="position-grid-{{i}}-{{j}}"><img src="{{grid[i][j]|safe}}" class="qi"/></td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}
@@ -26,8 +26,8 @@
             
             <div id="debug-div">
                 <form method="post">
-                    <p id="debug-text">This is a debug line {{result}}</p>
-                    <input type="submit" value="Submit">
+                    <p id="debug-text">{{debug}}</p>
+                    <input type="submit" value="Reset Board">
                 </form>
             </div>
         

@@ -62,14 +62,19 @@ class Board:
             else:
                 self.board_data[loc_y][loc_x] = READ_POSITION_PIECE.get(i, 0)
                 loc_x += 1
-
-def initiate_html():
-    b = Board(START_POSITION)
-    return b.board_data
-
-def update_html(position):
-    b = Board(START_POSITION)
-    return b.board_data
+    
+    def code_board(self):
+        code = ""
+        consecutive = 0
+        for i in range(1):
+            for j in range(1):
+                pass #TBW
+        return code
+        
+    
+def click_board(position):
+    
+    return 0
 
 if __name__ == "__main__":
     b = Board(START_POSITION)

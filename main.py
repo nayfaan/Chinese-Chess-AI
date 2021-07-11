@@ -2,7 +2,7 @@ import services.chess
 from services.chess import *
 
 #Flask: Web app wrapper
-from flask import Flask, render_template, request, escape, url_for
+from flask import Flask, render_template, request, escape, url_for, redirect, make_response
 from flask import jsonify
 app = Flask(__name__,
             static_url_path="",
@@ -30,40 +30,53 @@ DISPLAY_POSITION_PIECE = {
             14: "red_pawn"
         }
 for i in DISPLAY_POSITION_PIECE:
-    DISPLAY_POSITION_PIECE.update({i:"<img src=\"images/qi/" + DISPLAY_POSITION_PIECE[i] + ".png\" class=\"qi\"/>"})
+    DISPLAY_POSITION_PIECE.update({i:"images/qi/" + DISPLAY_POSITION_PIECE[i] + ".png"})
+
 #initialize grids
-grid = []
-for i in range(10):
-    grid.append([])
-    for j in range(9):
-            grid[i].append("")
+grid_base = [[]] * 10
+for i in range(len(grid_base)):
+    grid_base[i] = [""] * 9
+
+b = services.chess.Board(START_POSITION).board_data
+debug = str(b)
+grid = grid_base[:]
 
 #Starting web app
-@app.route("/index", methods=["GET", "POST"])
+@app.route("/index", methods=["GET", "POST", "PUT"])
 def index():
     #update()
     #return render_template("index.html")
+    global debug
+    global grid
     
-    if request.method == "POST":
-        debug = "This is POST!"#update()
+    #idfk where this came from
+    if request.method == "GET":
+        debug = "This is GET!"
         
-        return render_template("index.html", result=debug, grid=grid)
+        return render_template("index.html", debug=debug, grid=grid)
+    
+    #background process: clicking board elements
+    elif request.method == "PUT":
+        debug = request.form.get("position")
+        
+        return jsonify({"debug":debug, "grid":grid})
+        
+    
+    #post method, only called at initiation (?)
     else:
-        debug = str(initiate())
+        grid = translate_board_data(b)
         
-        b_start = services.chess.Board(START_POSITION).board_data
-        for i in range(2,11):
-            for j in range(2,12):
-                grid[j-2][i-2] = DISPLAY_POSITION_PIECE.get(b_start[j][i], "")
-                print(b_start[i][j])
+        return render_template("index.html", debug=debug, grid=grid)
+        
 
-        return render_template("index.html", result=b_start, grid=grid)
-    
-def initiate():
-    return services.chess.initiate_html()
-    
-def update(position):
-    return services.chess.update_html(position)
+
+
+def translate_board_data(b):
+    grid_temp = [x[:] for x in grid_base]
+    for i in range(2,11):
+        for j in range(2,12):
+            grid_temp[j-2][i-2] = DISPLAY_POSITION_PIECE.get(b[j][i], "")
+    return grid_temp
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=True)
